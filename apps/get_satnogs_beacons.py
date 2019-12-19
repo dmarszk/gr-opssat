@@ -52,15 +52,25 @@ def fetch_frames(params):
     return out_frames
 
 def main():
+    duplicated = 0
+    written = 0
     norad_id = 99992
     params = {'format': 'json', 'satellite': norad_id}
     frames = fetch_frames(params)
     #print frames
+    lastdata = []
     f = open('opssat_frames.bin', 'wb')
+    print ('Writing frames in reversed order')
     for frame in reversed(frames):
+        if frame['data'] == lastdata:
+            duplicated += 1
+            continue
+        print(frame['timestamp'].strftime('%Y/%m/%d %H:%M:%S'))
         f.write(frame['data'])
+        lastdata = frame['data']
+        written += 1
     f.close()
-    print ('All processed frames written to the file in reversed order')
+    print ('{} processed frames written to the file (removed {} duplicates)'.format(written, duplicated))
 
 if __name__== "__main__":
     main()
