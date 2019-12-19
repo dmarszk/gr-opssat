@@ -41,10 +41,11 @@ class CSP(object):
         HMAC:\t\t\t{}
         XTEA:\t\t\t{}
         RDP:\t\t\t{}
-        CRC:\t\t\t{}""".format(
+        CRC:\t\t\t{}
+        length:\t\t\t{}""".format(
             self.priority, self.source, self.destination, self.dest_port,
             self.source_port, self.reserved, self.hmac, self.xtea, self.rdp,
-            self.crc))
+            self.crc, self.getLength()))
 
     def isBeacon(self):
         if self.priority == 3 and self.source == 5 and self.destination == 10 and self.dest_port == 31 and self.source_port==0 and self.getLength() == 58:
@@ -80,7 +81,9 @@ while True:
     csp = CSP(pdu[:(len(pdu)-4)])
     processed += 1
     #print("Processing CSP {}".format(csp.toString()))
-    if csp.isBeacon():
+    if not csp.isBeacon():
+        print("Not a beacon?! CSP {}".format(csp.toString()))
+    else:
         temp_brd,\
         temp_pa,\
         last_rssi,\
