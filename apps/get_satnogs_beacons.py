@@ -55,7 +55,7 @@ def main():
     duplicated = 0
     written = 0
     norad_id = 99992
-    params = {'format': 'json', 'satellite': norad_id}
+    params = {'format': 'json', 'satellite': norad_id, 'app_source': 'network'}
     frames = fetch_frames(params)
     #print frames
     lastdata = []
